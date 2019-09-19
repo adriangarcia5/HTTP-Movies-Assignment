@@ -11,9 +11,36 @@ const UpdateForm = (props) => {
         metascore: '',
         stars: []
 });
+
+const fetchMovie = id => {
+    axios
+      .get(`http://localhost:5000/api/movies/${id}`)
+      .then(res => setMovies(res.data))
+      .then(res => console.log(res, 'res'))
+    //   .then(console.log(setMovies, 'set movies'))
+      .catch(err => console.log(err.response));
+  };
+
+//run this componentDidMount, componentDidUpdate with useEffect
+  useEffect(()=>{
+    fetchMovie(props.match.params.id); //supposed to run our movie with fetchMovie callback
+}, [props.match.params.id])
+
   
 
-const handleChange = e => setMovies({ ...Movie, [e.target.name]: e.target.value })
+const handleChange = e => setMovies({ ...movies, [e.target.name]: e.target.value })
+
+//a function that accepts a value of another function
+const handleStar = index => e => {
+    setMovies({...movies, stars: movies.stars.map((star, starIndex)=> {
+        if (starIndex === index) {
+            return e.target.value
+        } else {
+            return star;
+        }
+    })})
+}
+
 
 
 return(
@@ -37,24 +64,18 @@ return(
             type="text"
             name="metascore"
             placeholder="metascore"
-            value={movies.title}
+            value={movies.metascore}
             onChange={handleChange}
             />
-        {/* <input 
-            type="text"
-            name="title"
-            placeholder="title"
-            value={movie.title}
-            onChange={handleChange}/> */}
-
-            {/* {Movie.stars.map((starName, index)=> {
+        
+            {movies.stars.map((starName, index)=> {
                 return <input type="text"
                             placeholder="star"
                             key={index}
                             value={starName}
                             onChange={handleStar(index)}
                             />
-            })} */}
+            })}
     </form>
     )
 }
