@@ -6,7 +6,6 @@ import axios from 'axios'
 const UpdateForm = (props) => {
 
     const[movies,setMovies] = useState(null); 
-
 //     const[movies,setMovies] = useState({
 //         title: '',
 //         director: '',
@@ -45,7 +44,7 @@ const handleStar = index => e => {
 
 const handleSubmit = e => {
     e.preventDefault();
-    axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies) 
+    axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies)
     .then(res => {console.log(res) 
     props.history.push('/') //push new data in 
 })
@@ -57,7 +56,8 @@ const addStar = e => {
 }
 
 const deleteStar = e => {
-    
+    e.preventDefault();
+    setMovies(movies.filter(movie => movie.id != props.match.params.id))
 }
 
 if (!movies) {
@@ -97,8 +97,9 @@ return(
                             onChange={handleStar(index)}
                             />
             })}
-            <button type="submit"> Update move</button>
+            <button type="submit"> Update movie</button>
             <button onClick={addStar}> Add star</button>
+            <button onClick={deleteStar}> Delete star</button>
     </form>
     )
 }
