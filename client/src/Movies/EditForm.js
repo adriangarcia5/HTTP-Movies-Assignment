@@ -5,12 +5,14 @@ import axios from 'axios'
 
 const UpdateForm = (props) => {
 
-    const[movies,setMovies] = useState({
-        title: '',
-        director: '',
-        metascore: '',
-        stars: []
-});
+    const[movies,setMovies] = useState(null);
+
+//     const[movies,setMovies] = useState({
+//         title: '',
+//         director: '',
+//         metascore: '',
+//         stars: []
+// });
 
 const fetchMovie = id => {
     axios
@@ -41,10 +43,20 @@ const handleStar = index => e => {
     })})
 }
 
+const handleSubmit = e => {
+    e.preventDefault();
+    axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies)
+    .then(res => {console.log(res)
+    props.history.push('/')
+})
+}
 
+if (!movies) {
+    return <div>Movie Loading....</div>
+}
 
 return(
-    <form>
+    <form onSubmit={handleSubmit}>
         <input
         type="text"
         name="title"
@@ -76,6 +88,7 @@ return(
                             onChange={handleStar(index)}
                             />
             })}
+            <button type="submit"> Update move</button>
     </form>
     )
 }
