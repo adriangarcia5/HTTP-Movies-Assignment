@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const UpdateForm = (props) => {
 
-    const[movies,setMovies] = useState(null);
+    const[movies,setMovies] = useState(null); 
 
 //     const[movies,setMovies] = useState({
 //         title: '',
@@ -45,8 +45,8 @@ const handleStar = index => e => {
 
 const handleSubmit = e => {
     e.preventDefault();
-    axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies)
-    .then(res => {console.log(res)
+    axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, movies) 
+    .then(res => {console.log(res) 
     props.history.push('/') //push new data in 
 })
 }
@@ -54,6 +54,10 @@ const handleSubmit = e => {
 const addStar = e => {
     e.preventDefault();
     setMovies({...movies, stars: [...movies.stars, '']});
+}
+
+const deleteStar = e => {
+    
 }
 
 if (!movies) {
